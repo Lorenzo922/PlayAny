@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home - PlayAny</title>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+    }
+    .topbar {
+      background: #2f00ff;
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .user-info {
+      font-size: 16px;
+    }
+    .logout-btn {
+      margin-left: 15px;
+      background: #ff4444;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .logout-btn:hover {
+      background: #e03333;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="logo">PlayAny</div>
+    <div class="user-info" id="user-info">Carregando...</div>
+  </div>
+
+  <script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyA-PEvp2reLWNxI_HKPMS2vofxSNOvDzDE",
+      authDomain: "playvideos-e2d5d.firebaseapp.com",
+      projectId: "playvideos-e2d5d",
+      storageBucket: "playvideos-e2d5d.firebasestorage.app",
+      messagingSenderId: "220622211507",
+      appId: "1:220622211507:web:920bc3199ffacb5b7963c6"
+    };
+
+    // Inicializar Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Verificar usuário logado
+    auth.onAuthStateChanged(user => {
+      const userInfo = document.getElementById("user-info");
+
+      if (user) {
+        let name = user.displayName || user.email;
+        userInfo.innerHTML = `
+          Bem-vindo, ${name} 
+          <button class="logout-btn" onclick="logout()">Sair</button>
+        `;
+      } else {
+        // Se não tiver usuário, redireciona pro login
+        window.location.href = "login.html";
+      }
+    });
+
+    // Logout
+    function logout() {
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      });
+    }
+  </script>
+</body>
+</html>
